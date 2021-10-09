@@ -1,5 +1,5 @@
-import { Column } from 'typeorm'
-import { IUser } from '../interfaces/user.interface'
+import { BeforeInsert, Column, Unique } from 'typeorm';
+import { Gender, IUser } from '../interfaces/user.interface';
 import { Entity,PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -10,14 +10,14 @@ export class User implements IUser {
   @Column({length: 25, nullable: true})
   name: string
 
-  @Column({length: 255})
+  @Column({unique: true, length: 255})
   email: string
 
   @Column({name: 'address', length: 255})
   address: string
 
-  @Column({default: 0})
-  gender: boolean
+  @Column()
+  gender: Gender
 
   @Column({
     name: 'birthday',
@@ -34,4 +34,9 @@ export class User implements IUser {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
   updatedAt: Date;
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase()
+  }
 }

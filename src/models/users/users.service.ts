@@ -5,6 +5,7 @@ import { UsersRepository } from './users.repository';
 import { UserEntity } from './serializers/user.serializer';
 import { IUser } from './interfaces/user.interface';
 import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/CreateUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
   }
 
   async create(
-    inputs: User,
+    inputs: CreateUserDto,
   ): Promise<UserEntity> {
     return await this.usersRepository.createEntity(inputs)
   }
@@ -43,4 +44,15 @@ export class UsersService {
   async deleteById(id: number): Promise<Boolean> {
     return await this.usersRepository.deleteEntityById(id)
   }
+
+  async getDataByEmail(
+    email: string
+  ) {
+    return this.usersRepository.getUsersByEmail(email)
+  }
+
+  // async validate(email: string)
+  // {
+  //   async
+  // }
 }

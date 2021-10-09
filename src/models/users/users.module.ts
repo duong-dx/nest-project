@@ -1,4 +1,4 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,10 +10,6 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [UsersController],
   providers: [UsersService, ConfigModule],
   exports: [UsersService],
-  // imports: [MessagesRepository],
-  // controllers: [MessagesController],
-  // providers: [MessagesService, MessagesRepository],
-  // exports: [MessagesService],
 })
 
 export class UsersModule {}

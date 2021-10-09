@@ -16,6 +16,7 @@ import {
 } from './serializers/user.serializer';
 import {UsersService} from './users.service';
 import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/CreateUser.dto';
 
 @Controller('users')
 @SerializeOptions({
@@ -43,7 +44,7 @@ export class UsersController {
   @Post('/')
   @UseInterceptors(ClassSerializerInterceptor)
   async create(
-    @Body() inputs: User,
+    @Body() inputs: CreateUserDto,
   ): Promise<UserEntity> {
     return await this.usersService.create(inputs);
   }
@@ -66,6 +67,13 @@ export class UsersController {
     const user = await this.usersService.findById(parseInt(params.id, 0))
     this.throwUserNotFound(user)
     return await this.usersService.deleteById(params.id);
+  }
+
+  @Get('/user/:email')
+  async getDataByEmail(
+    @Param() params
+  ) {
+    return this.usersService.getDataByEmail(params.email);
   }
 
   throwUserNotFound(

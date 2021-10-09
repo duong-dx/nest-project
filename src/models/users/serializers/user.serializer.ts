@@ -1,4 +1,4 @@
-import { IUser } from '../interfaces/user.interface';
+import { Gender, IUser } from '../interfaces/user.interface';
 import { Expose } from 'class-transformer';
 import { ModelEntity } from '../../model.serializer';
 
@@ -18,7 +18,7 @@ export class UserEntity extends ModelEntity implements IUser {
 
   name: null | string;
 
-  gender: boolean;
+  gender: Gender | null;
 
   address: string | null;
 
