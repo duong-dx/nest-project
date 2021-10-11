@@ -12,7 +12,7 @@ export const allUserGroupsForSerializing: string[] = [
 ];
 
 export class UserEntity extends ModelEntity implements IUser {
-  id: number | string
+  id: number | string;
 
   email: string;
 
@@ -33,5 +33,4 @@ export class UserEntity extends ModelEntity implements IUser {
 
   @Expose({ groups: ['user.timestamps'] })
   updatedAt: Date;
-
 }

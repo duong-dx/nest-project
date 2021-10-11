@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessagesRepository } from './messages.repository';
 import { MessageEntity } from './serializers/message.serializer';
@@ -7,38 +7,38 @@ import { Message } from './entities/message.entity';
 @Injectable()
 export class MessagesService {
   constructor(
-    @InjectRepository(MessagesRepository) private  usersRepository: MessagesRepository
+    @InjectRepository(MessagesRepository)
+    private usersRepository: MessagesRepository,
   ) {}
 
   async findAll(
     relations: string[] = [],
-    throwsException = false
-  ): Promise<MessageEntity []> {
-    return await this.usersRepository.getAllEntity(relations, throwsException)
+    throwsException = false,
+  ): Promise<MessageEntity[]> {
+    return await this.usersRepository.getAllEntity(relations, throwsException);
   }
 
-  async create(
-    inputs: Message,
-  ): Promise<MessageEntity> {
-    return await this.usersRepository.createEntity(inputs)
+  async create(inputs: Message): Promise<MessageEntity> {
+    return await this.usersRepository.createEntity(inputs);
   }
 
-  async findById (
+  async findById(
     id: number,
     relations: string[] = [],
-    throwsException = false
+    throwsException = false,
   ): Promise<MessageEntity> {
-    return await this.usersRepository.getEntityById(id, relations, throwsException)
+    return await this.usersRepository.getEntityById(
+      id,
+      relations,
+      throwsException,
+    );
   }
 
-  async update(
-    user: MessageEntity,
-    inputs: Message,
-    ): Promise<MessageEntity> {
-    return await this.usersRepository.updateEntity(user, inputs)
+  async update(user: MessageEntity, inputs: Message): Promise<MessageEntity> {
+    return await this.usersRepository.updateEntity(user, inputs);
   }
 
-  async deleteById(id: number): Promise<Boolean> {
-    return await this.usersRepository.deleteEntityById(id)
+  async deleteById(id: number): Promise<boolean> {
+    return await this.usersRepository.deleteEntityById(id);
   }
 }

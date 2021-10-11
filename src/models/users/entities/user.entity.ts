@@ -1,35 +1,40 @@
-import { BeforeInsert, Column, Unique } from 'typeorm';
+import { BeforeInsert, Column } from 'typeorm';
 import { Gender, IUser } from '../interfaces/user.interface';
-import { Entity,PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User implements IUser {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({length: 25, nullable: true})
-  name: string
+  @Column({ length: 25, nullable: true })
+  name: string;
 
-  @Column({unique: true, length: 255})
-  email: string
+  @Column({ unique: true, length: 255 })
+  email: string;
 
-  @Column({name: 'address', length: 255})
-  address: string
+  @Column({ name: 'address', length: 255 })
+  address: string;
 
   @Column()
-  gender: Gender
+  gender: Gender;
 
   @Column({
     name: 'birthday',
     default: null,
-    nullable: true
+    nullable: true,
   })
-  birthday: Date
+  birthday: Date;
 
-  @Column({name: 'password', length: 255})
+  @Column({ name: 'password', length: 255 })
   password: string;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true})
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
@@ -37,6 +42,6 @@ export class User implements IUser {
 
   @BeforeInsert()
   emailToLowerCase() {
-    this.email = this.email.toLowerCase()
+    this.email = this.email.toLowerCase();
   }
 }

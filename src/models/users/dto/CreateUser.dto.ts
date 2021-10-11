@@ -1,14 +1,15 @@
 import {
   IsEnum,
   IsOptional,
-  NotEquals,
+  // NotEquals,
   IsDate,
   IsNotEmpty,
   IsString,
-  MaxLength, IsEmail, Validate,
+  MaxLength,
+  IsEmail,
+  Validate,
 } from 'class-validator';
 import { Gender } from '../interfaces/user.interface';
-import { UserExistsRule } from '../rules/user-exists-rule.rule';
 
 export class CreateUserDto {
   @IsString()
@@ -17,8 +18,7 @@ export class CreateUserDto {
   name: string;
 
   @IsEmail()
-  @Validate(UserExistsRule)
-  email: string
+  email: string;
 
   @IsString()
   @MaxLength(255)

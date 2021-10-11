@@ -11,7 +11,6 @@ import { ConfigModule } from '@nestjs/config';
   providers: [UsersService, ConfigModule],
   exports: [UsersService],
 })
-
 export class UsersModule {}
 // export class MessagesModule implements NestModule {
 //   configure(consumer: MiddlewareConsumer): any {

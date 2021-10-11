@@ -1,52 +1,52 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class messageTable1632326169350 implements MigrationInterface {
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.createTable(
-          new Table({
-              name: 'messages',
-              columns: [
-                  {
-                      name: 'id',
-                      type: 'bigint',
-                      isPrimary: true,
-                      isGenerated: true,
-                      generationStrategy: 'increment',
-                  },
-                  {
-                      name: 'conversation_id',
-                      type: 'bigint',
-                      isNullable: true
-                  },
-                  {
-                      name: 'status',
-                      type: 'boolean',
-                      isNullable: true
-                  },
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: 'messages',
+        columns: [
+          {
+            name: 'id',
+            type: 'bigint',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
+          {
+            name: 'conversation_id',
+            type: 'bigint',
+            isNullable: true,
+          },
+          {
+            name: 'status',
+            type: 'boolean',
+            isNullable: true,
+          },
 
-                  {
-                      name: 'message',
-                      type: 'varchar',
-                      isNullable: true
-                  },
-                  {
-                      name: 'created_at',
-                      type: 'timestamp',
-                      isNullable: true,
-                      default: 'now()'
-                  },
-                  {
-                      name: 'updated_at',
-                      type: 'timestamp',
-                      isNullable: true,
-                      default: 'now()'
-                  }
-              ],
-          })
-        )
-    }
+          {
+            name: 'message',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            isNullable: true,
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            isNullable: true,
+            default: 'now()',
+          },
+        ],
+      }),
+    );
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('messages')
-    }
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('messages');
+  }
 }

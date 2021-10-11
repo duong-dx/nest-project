@@ -6,7 +6,8 @@ import config from './orm-config';
 import { MessagesModule } from './models/messages/messages.module';
 import { UsersModule } from './models/users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { RulesModule } from './models/users/rules/rules.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpErrorFilter } from './shared/http-error-filter';
 
 @Module({
   imports: [
@@ -14,9 +15,8 @@ import { RulesModule } from './models/users/rules/rules.module';
     MessagesModule,
     UsersModule,
     AuthModule,
-    RulesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_FILTER, useClass: HttpErrorFilter }],
 })
 export class AppModule {}

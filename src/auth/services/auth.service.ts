@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { from, Observable } from 'rxjs';
-const bcrypt = require('bcrypt')
+import { Observable } from 'rxjs';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class AuthService {
-  hashPassword(password: string): Observable<string> {
-    return bcrypt.hash(password, 12)
+  async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, 12);
   }
 
-  comparePassword(password: string, storePasswordHash: string): Observable<any> {
-    return bcrypt.compare(password, storePasswordHash)
+  async comparePassword(
+    password: string,
+    storePasswordHash: string,
+  ): Promise<any> {
+    return await bcrypt.compare(password, storePasswordHash);
   }
 }

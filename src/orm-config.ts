@@ -10,12 +10,10 @@ const config: MysqlConnectionOptions = {
   entities: ['dist/models/**/*.entity{.ts,.js}'],
   synchronize: false,
   dropSchema: false,
-  migrations: [
-    "dist/database/migrations/*.js",
-  ],
+  migrations: ['dist/database/migrations/*.js'],
   cli: {
-    migrationsDir: 'src/database/migrations'
-  }
-}
+    migrationsDir: 'src/database/migrations',
+  },
+};
 
 export default config;

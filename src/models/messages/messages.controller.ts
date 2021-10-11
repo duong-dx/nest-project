@@ -8,13 +8,15 @@ import {
   Controller,
   UseInterceptors,
   SerializeOptions,
-  ClassSerializerInterceptor, HttpException, HttpStatus,
+  ClassSerializerInterceptor,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   extendedMessageGroupsForSerializing,
   MessageEntity,
 } from './serializers/message.serializer';
-import {MessagesService} from './messages.service';
+import { MessagesService } from './messages.service';
 import { Message } from './entities/message.entity';
 
 @Controller('messages')
@@ -27,24 +29,20 @@ export class MessagesController {
   @Get('/')
   @UseInterceptors(ClassSerializerInterceptor)
   async index() {
-    return this.messageService.findAll()
+    return this.messageService.findAll();
   }
 
   @Get('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
-  async getById(
-    @Param() params
-  ): Promise<MessageEntity> {
+  async getById(@Param() params): Promise<MessageEntity> {
     const message = await this.messageService.findById(params.id);
-    this.throwMessageNotFound(message)
-    return message
+    this.throwMessageNotFound(message);
+    return message;
   }
 
   @Post('/')
   @UseInterceptors(ClassSerializerInterceptor)
-  async create(
-    @Body() inputs: Message,
-  ): Promise<MessageEntity> {
+  async create(@Body() inputs: Message): Promise<MessageEntity> {
     return await this.messageService.create(inputs);
   }
 
@@ -54,25 +52,21 @@ export class MessagesController {
     @Param() params,
     @Body() inputs: Message,
   ): Promise<MessageEntity> {
-    const message = await this.messageService.findById(parseInt(params.id, 0))
-    this.throwMessageNotFound(message)
+    const message = await this.messageService.findById(parseInt(params.id, 0));
+    this.throwMessageNotFound(message);
     return await this.messageService.update(message, inputs);
   }
 
   @Delete('/:id')
-  async delete(
-    @Param() params,
-  ): Promise<Boolean> {
-    const message = await this.messageService.findById(parseInt(params.id, 0))
-    this.throwMessageNotFound(message)
+  async delete(@Param() params): Promise<boolean> {
+    const message = await this.messageService.findById(parseInt(params.id, 0));
+    this.throwMessageNotFound(message);
     return await this.messageService.deleteById(params.id);
   }
 
-  throwMessageNotFound(
-    message: MessageEntity
-  ) {
+  throwMessageNotFound(message: MessageEntity) {
     if (!message) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND)
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 }
