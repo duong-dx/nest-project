@@ -24,7 +24,7 @@ export class UsersRepository extends ModelRepository<User, UserEntity> {
     });
   }
 
-  async getUserByEmail(email: string): Promise<UserEntity | void> {
+  async getUserByEmail(email: string): Promise<UserEntity> {
     return await this.findOne({
       where: { email: email },
     }).then((entity) => {

@@ -1,14 +1,19 @@
 import {
   Body,
-  Controller,
+  Controller, Get,
   HttpException,
   HttpStatus,
   Post,
-} from '@nestjs/common';
+  Request, UseGuards
+} from "@nestjs/common";
 import { CreateUserDto } from '../models/users/dto/CreateUser.dto';
 import { UsersService } from '../models/users/users.service';
 import { LoginUserDto } from '../models/users/dto/LoginUser.dto';
 import { AuthService } from './services/auth.service';
+import { JwtService } from '@nestjs/jwt';
+import { AuthenticationGuard } from "./auth.guard";
+import { AuthPayload } from "./interfaces/auth-payload.interface";
+import { LocalAuthGuard } from "./local.guard";
 
 @Controller()
 export class AuthController {
@@ -31,11 +36,16 @@ export class AuthController {
     return this.userService.create(input);
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async handleLogin(@Body() input) {
-    console.log(input, 99999);
-    const user = await this.userService.getUserByEmail(input.email);
-    console.log(user);
+  async login(@Request() request): Promise<any> {
+    return this.authService.login(request.user);
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Get('current-user')
+  async getUserLoggedIn(@Request() request): Promise<AuthPayload> {
+    return request.user;
   }
 
   async validate(email: string) {

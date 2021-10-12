@@ -42,11 +42,11 @@ export class UsersService {
     return await this.usersRepository.deleteEntityById(id);
   }
 
-  async geUsersByEmail(email: string) {
-    return this.usersRepository.getUsersByEmail(email);
+  async geUsersByEmail(email: string): Promise<UserEntity[]> {
+    return await this.usersRepository.getUsersByEmail(email);
   }
 
-  async getUserByEmail(email: string) {
-    return this.usersRepository.getUserByEmail(email);
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    return await this.usersRepository.getUserByEmail(email);
   }
 }

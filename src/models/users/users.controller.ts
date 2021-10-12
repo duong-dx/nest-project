@@ -11,6 +11,7 @@ import {
   ClassSerializerInterceptor,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import {
   UserEntity,
@@ -19,7 +20,9 @@ import {
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { AuthenticationGuard } from '../../auth/auth.guard';
 
+@UseGuards(AuthenticationGuard)
 @Controller('users')
 @SerializeOptions({
   groups: extendedUserGroupsForSerializing,
