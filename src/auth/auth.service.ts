@@ -1,9 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserEntity } from '../../models/users/serializers/user.serializer';
-import { LoginUserDto } from '../../models/users/dto/LoginUser.dto';
+import { Injectable } from '@nestjs/common';
+import { UserEntity } from '../models/users/serializers/user.serializer';
 import { JwtService } from '@nestjs/jwt';
-import { AuthPayload } from '../interfaces/auth-payload.interface';
-import { UsersService } from "../../models/users/users.service";
+import { AuthPayload } from './interfaces/auth-payload.interface';
+import { UsersService } from '../models/users/users.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 

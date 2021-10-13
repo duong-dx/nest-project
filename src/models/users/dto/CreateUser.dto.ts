@@ -7,7 +7,6 @@ import {
   IsString,
   MaxLength,
   IsEmail,
-  Validate,
 } from 'class-validator';
 import { Gender } from '../interfaces/user.interface';
 
