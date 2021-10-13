@@ -20,7 +20,7 @@ import {
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/CreateUser.dto';
-import { AuthenticationGuard } from '../../auth/auth.guard';
+import { AuthenticationGuard } from '../../auth/guards/auth.guard';
 
 @UseGuards(AuthenticationGuard)
 @Controller('users')

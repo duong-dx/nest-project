@@ -6,9 +6,10 @@ import { UsersRepository } from '../models/users/users.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../models/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { JsonWebTokenStrategy } from '../jwt-strategy';
-import { LocalStrategy } from './local.strategy';
-import { PassportModule } from "@nestjs/passport";
+import { JsonWebTokenStrategy } from './strategies/jwt-strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { PassportModule } from '@nestjs/passport';
+import { JWT_SECRET_KEY } from '../config/constants';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { PassportModule } from "@nestjs/passport";
     TypeOrmModule.forFeature([UsersRepository]),
     PassportModule,
     JwtModule.register({
-      secret: '12345678',
+      secret: JWT_SECRET_KEY,
       signOptions: { expiresIn: '60m' },
     }),
   ],

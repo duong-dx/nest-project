@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersRepository } from './users.repository';
 import { ConfigModule } from '@nestjs/config';
-import { JsonWebTokenStrategy } from '../../jwt-strategy';
+import { JsonWebTokenStrategy } from '../../auth/strategies/jwt-strategy';
 
 @Module({
   imports: [ConfigModule, TypeOrmModule.forFeature([UsersRepository])],

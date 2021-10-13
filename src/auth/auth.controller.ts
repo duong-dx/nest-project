@@ -11,9 +11,9 @@ import { UsersService } from '../models/users/users.service';
 import { LoginUserDto } from '../models/users/dto/LoginUser.dto';
 import { AuthService } from './services/auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticationGuard } from "./auth.guard";
+import { AuthenticationGuard } from "./guards/auth.guard";
 import { AuthPayload } from "./interfaces/auth-payload.interface";
-import { LocalAuthGuard } from "./local.guard";
+import { LocalAuthGuard } from "./guards/local.guard";
 
 @Controller()
 export class AuthController {
@@ -39,6 +39,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Request() request): Promise<any> {
+    console.log(process.env.JWT_SECRET_KEY);
     return this.authService.login(request.user);
   }
 
