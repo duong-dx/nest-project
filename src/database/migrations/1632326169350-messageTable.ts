@@ -19,8 +19,14 @@ export class messageTable1632326169350 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'user_id',
+            type: 'bigint',
+            isNullable: true,
+          },
+          {
             name: 'status',
             type: 'boolean',
+            default: false,
             isNullable: true,
           },
 

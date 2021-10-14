@@ -34,6 +34,13 @@ export class UsersService {
     );
   }
 
+  async findUserAndMessageReadById(
+    id: number,
+    status: number | null,
+  ): Promise<UserEntity> {
+    return await this.usersRepository.findUserAndMessageReadById(id, status);
+  }
+
   async update(user: UserEntity, inputs: User): Promise<UserEntity> {
     return await this.usersRepository.updateEntity(user, inputs);
   }

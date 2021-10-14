@@ -13,11 +13,3 @@ import { JsonWebTokenStrategy } from '../../auth/strategies/jwt-strategy';
   exports: [UsersService],
 })
 export class UsersModule {}
-// export class MessagesModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer): any {
-//     consumer
-//       .apply(UserMiddleware)
-//       .forRoutes('users');
-//   }
-//
-// }

@@ -1,10 +1,7 @@
 import { EntityRepository } from 'typeorm';
 import { Message } from './entities/message.entity';
 import { ModelRepository } from '../model.repository';
-import {
-  allMessageGroupsForSerializing,
-  MessageEntity,
-} from './serializers/message.serializer';
+import { MessageEntity } from './serializers/message.serializer';
 import { plainToClass, classToPlain } from 'class-transformer';
 
 @EntityRepository(Message)
@@ -13,9 +10,7 @@ export class MessagesRepository extends ModelRepository<
   MessageEntity
 > {
   transform(model: Message): MessageEntity {
-    const transformOptions = {
-      groups: allMessageGroupsForSerializing,
-    };
+    const transformOptions = {};
 
     return plainToClass(
       MessageEntity,

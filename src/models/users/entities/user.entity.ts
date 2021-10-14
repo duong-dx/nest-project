@@ -1,11 +1,14 @@
-import { BeforeInsert, Column } from 'typeorm';
 import { Gender, IUser } from '../interfaces/user.interface';
 import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
+  Column,
+  OneToMany,
 } from 'typeorm';
+import { Message } from '../../messages/entities/message.entity';
 
 @Entity({ name: 'users' })
 export class User implements IUser {
@@ -44,4 +47,7 @@ export class User implements IUser {
   emailToLowerCase() {
     this.email = this.email.toLowerCase();
   }
+
+  @OneToMany(() => Message, (message) => message.user)
+  messages?: Message[];
 }

@@ -39,7 +39,18 @@ export class UsersController {
   @Get('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
   async getById(@Param() params): Promise<UserEntity> {
-    const user = await this.usersService.findById(params.id);
+    const user = await this.usersService.findById(params.id, ['messages']);
+    this.throwUserNotFound(user);
+    return user;
+  }
+
+  @Get('messages/:id/:status')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getByIdAndMessageStatus(@Param() params): Promise<UserEntity> {
+    const user = await this.usersService.findUserAndMessageReadById(
+      params.id,
+      params.status,
+    );
     this.throwUserNotFound(user);
     return user;
   }
@@ -72,7 +83,7 @@ export class UsersController {
 
   throwUserNotFound(user: UserEntity) {
     if (!user) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      throw new HttpException("User don't exists", HttpStatus.NOT_FOUND);
     }
   }
 }

@@ -6,8 +6,6 @@ import config from './orm-config';
 import { MessagesModule } from './models/messages/messages.module';
 import { UsersModule } from './models/users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_FILTER } from '@nestjs/core';
-import { HttpErrorFilter } from './shared/http-error-filter';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -19,6 +17,6 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_FILTER, useClass: HttpErrorFilter }],
+  providers: [AppService],
 })
 export class AppModule {}

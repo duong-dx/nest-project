@@ -36,6 +36,17 @@ export class UsersRepository extends ModelRepository<User, UserEntity> {
     });
   }
 
+  async findUserAndMessageReadById(
+    id: number,
+    status: number | null,
+  ): Promise<any> {
+    return await this.createQueryBuilder('user')
+      .leftJoinAndSelect('user.messages', 'messages')
+      .where('messages.status = :status', { status })
+      .andWhere({ id })
+      .getOne();
+  }
+
   transform(model: User): UserEntity {
     const transformOptions = {
       groups: allUserGroupsForSerializing,
