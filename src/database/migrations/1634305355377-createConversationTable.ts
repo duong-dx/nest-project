@@ -1,10 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class messageTable1632326169350 implements MigrationInterface {
+export class createConversationTable1634305355377
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'messages',
+        name: 'conversations',
         columns: [
           {
             name: 'id',
@@ -14,25 +16,23 @@ export class messageTable1632326169350 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'conversation_id',
-            type: 'bigint',
+            name: 'title',
+            type: 'varchar(255)',
             isNullable: true,
           },
           {
-            name: 'user_id',
-            type: 'bigint',
-            isNullable: true,
-          },
-          {
-            name: 'status',
-            type: 'boolean',
-            default: false,
-            isNullable: true,
-          },
-
-          {
-            name: 'message',
+            name: 'description',
             type: 'varchar(5000)',
+            isNullable: true,
+          },
+          {
+            name: 'background',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'emoji',
+            type: 'varchar',
             isNullable: true,
           },
           {
@@ -53,6 +53,6 @@ export class messageTable1632326169350 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('messages');
+    await queryRunner.dropTable('conversations');
   }
 }
