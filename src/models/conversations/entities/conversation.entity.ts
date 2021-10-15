@@ -5,8 +5,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Emojis, Backgrounds } from '../interfaces/conversation.interface';
+import { User } from '../../users/entities/user.entity';
 
 @Entity({ name: 'conversations' })
 export class Conversation implements IConversation {
@@ -27,4 +30,12 @@ export class Conversation implements IConversation {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
   updatedAt: Date;
+
+  @ManyToMany(() => User, (users) => users.conversations)
+  @JoinTable({
+    name: 'user_conversation',
+    joinColumn: { name: 'conversation_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'user_id' },
+  })
+  users: User[];
 }
