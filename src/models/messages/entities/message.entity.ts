@@ -9,6 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Conversation } from '../../conversations/entities/conversation.entity';
 
 @Entity({ name: 'messages' })
 export class Message implements IMessage {
@@ -36,4 +37,8 @@ export class Message implements IMessage {
   @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn({ name: 'user_id' })
   user?: User;
+
+  @ManyToOne(() => Conversation, (conversation) => conversation.messages)
+  @JoinColumn({ name: 'conversation_id' })
+  conversation?: User;
 }

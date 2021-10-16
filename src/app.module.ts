@@ -7,6 +7,8 @@ import { MessagesModule } from './models/messages/messages.module';
 import { UsersModule } from './models/users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ConversationsModule } from './models/conversations/conversations.module';
+import { UserConversationModule } from './models/user_conversation/user-conversation.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { ConfigModule } from '@nestjs/config';
     MessagesModule,
     UsersModule,
     AuthModule,
+    ConversationsModule,
+    UserConversationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -31,7 +31,6 @@ export class MessagesController {
 
   @Post('/')
   async create(@Body() inputs: Message): Promise<MessageEntity> {
-    console.log(inputs);
     return await this.messageService.create(inputs);
   }
 

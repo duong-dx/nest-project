@@ -9,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JsonWebTokenStrategy } from './strategies/jwt-strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { JWT_SECRET_KEY } from '../config/constants';
+import { EXPIRES_TIME, JWT_SECRET_KEY } from '../config/constants';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { JWT_SECRET_KEY } from '../config/constants';
     PassportModule,
     JwtModule.register({
       secret: JWT_SECRET_KEY,
-      signOptions: { expiresIn: '60m' },
+      signOptions: { expiresIn: EXPIRES_TIME },
     }),
   ],
   providers: [AuthService, UsersService, LocalStrategy, JsonWebTokenStrategy],

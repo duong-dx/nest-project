@@ -7,8 +7,11 @@ import {
   BeforeInsert,
   Column,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
+import { Conversation } from '../../conversations/entities/conversation.entity';
 
 @Entity({ name: 'users' })
 export class User implements IUser {
@@ -50,4 +53,12 @@ export class User implements IUser {
 
   @OneToMany(() => Message, (message) => message.user)
   messages?: Message[];
+
+  @ManyToMany(() => Conversation, (conversations) => conversations.users)
+  @JoinTable({
+    name: 'user_conversation',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'conversation_id' },
+  })
+  conversations: Conversation[];
 }

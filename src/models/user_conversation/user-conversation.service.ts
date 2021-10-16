@@ -15,7 +15,10 @@ export class UserConversationService {
     relations: string[] = [],
     throwsException = false,
   ): Promise<UserConversationEntity[]> {
-    return await this.userConversationRepository.getAllEntity(relations, throwsException);
+    return await this.userConversationRepository.getAllEntity(
+      relations,
+      throwsException,
+    );
   }
 
   async create(inputs: UserConversation): Promise<UserConversationEntity> {
