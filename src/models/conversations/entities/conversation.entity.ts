@@ -7,9 +7,11 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Emojis, Backgrounds } from '../interfaces/conversation.interface';
 import { User } from '../../users/entities/user.entity';
+import { Message } from '../../messages/entities/message.entity';
 
 @Entity({ name: 'conversations' })
 export class Conversation implements IConversation {
@@ -19,10 +21,13 @@ export class Conversation implements IConversation {
   @Column({ name: 'title', nullable: true })
   title: string;
 
+  @Column({ name: 'description', nullable: true, length: 5000 })
+  description: string;
+
   @Column({ name: 'background', nullable: true, default: 'white' })
   background: Backgrounds;
 
-  @Column({ name: 'emoji', nullable: true, default: 'white'})
+  @Column({ name: 'emoji', nullable: true, default: 'white' })
   emoji: Emojis;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: true })
@@ -30,6 +35,9 @@ export class Conversation implements IConversation {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
   updatedAt: Date;
+
+  @OneToMany(() => Message, (message) => message.conversation)
+  messages?: Message[];
 
   @ManyToMany(() => User, (users) => users.conversations)
   @JoinTable({

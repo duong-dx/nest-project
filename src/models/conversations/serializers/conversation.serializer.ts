@@ -11,6 +11,8 @@ export class ConversationEntity extends ModelEntity implements IConversation {
 
   title: string | null;
 
+  description: string | null;
+
   emoji: Emojis | null;
 
   background: Backgrounds | null;

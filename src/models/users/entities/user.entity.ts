@@ -6,11 +6,12 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   Column,
-  OneToMany, ManyToMany
-} from "typeorm";
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
-import { Conversation } from "../../conversations/entities/conversation.entity";
-import { JoinTable } from "typeorm/browser";
+import { Conversation } from '../../conversations/entities/conversation.entity';
 
 @Entity({ name: 'users' })
 export class User implements IUser {

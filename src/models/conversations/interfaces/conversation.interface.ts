@@ -1,6 +1,7 @@
 export interface IConversation {
   id: number | string;
   title: string | null;
+  description: string | null;
   emoji: Emojis;
   background: Backgrounds;
   createdAt: Date;

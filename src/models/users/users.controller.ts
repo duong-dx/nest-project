@@ -55,6 +55,17 @@ export class UsersController {
     return user;
   }
 
+  @Get('conversation/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async userConversation(@Param() params): Promise<UserEntity> {
+    const user = await this.usersService.findById(params.id, [
+      'conversations',
+      'conversations.messages',
+    ]);
+    this.throwUserNotFound(user);
+    return user;
+  }
+
   @Post('/')
   @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() inputs: CreateUserDto): Promise<UserEntity> {

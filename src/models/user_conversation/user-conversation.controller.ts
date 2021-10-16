@@ -13,7 +13,7 @@ import { UserConversationEntity } from './serializers/user-conversation.serializ
 import { UserConversationService } from './user-conversation.service';
 import { UserConversation } from './entities/user-conversation.entity';
 
-@Controller('UserConversations')
+@Controller('user-conversation')
 export class UserConversationController {
   constructor(
     private readonly userConversationService: UserConversationService,
@@ -34,8 +34,9 @@ export class UserConversationController {
   }
 
   @Post('/')
-  async create(@Body() inputs: UserConversation): Promise<UserConversationEntity> {
-    console.log(inputs);
+  async create(
+    @Body() inputs: UserConversation,
+  ): Promise<UserConversationEntity> {
     return await this.userConversationService.create(inputs);
   }
 
