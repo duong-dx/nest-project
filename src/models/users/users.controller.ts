@@ -59,6 +59,7 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   async userConversation(@Param() params): Promise<UserEntity> {
     const user = await this.usersService.findById(params.id, [
+      'profile',
       'conversations',
       'conversations.messages',
     ]);

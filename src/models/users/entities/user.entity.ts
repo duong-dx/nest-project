@@ -1,4 +1,4 @@
-import { Gender, IUser } from '../interfaces/user.interface';
+import { IUser } from '../interfaces/user.interface';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,10 +8,11 @@ import {
   Column,
   OneToMany,
   ManyToMany,
-  JoinTable,
-} from 'typeorm';
+  JoinTable, OneToOne
+} from "typeorm";
 import { Message } from '../../messages/entities/message.entity';
 import { Conversation } from '../../conversations/entities/conversation.entity';
+import { Profile } from "../../profiles/entities/profile.entity";
 
 @Entity({ name: 'users' })
 export class User implements IUser {
@@ -23,19 +24,6 @@ export class User implements IUser {
 
   @Column({ unique: true, length: 255 })
   email: string;
-
-  @Column({ name: 'address', length: 255 })
-  address: string;
-
-  @Column()
-  gender: Gender;
-
-  @Column({
-    name: 'birthday',
-    default: null,
-    nullable: true,
-  })
-  birthday: Date;
 
   @Column({ name: 'password', length: 255 })
   password: string;
@@ -50,6 +38,9 @@ export class User implements IUser {
   emailToLowerCase() {
     this.email = this.email.toLowerCase();
   }
+
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
 
   @OneToMany(() => Message, (message) => message.user)
   messages?: Message[];

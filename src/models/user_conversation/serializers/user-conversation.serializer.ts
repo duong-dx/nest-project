@@ -16,9 +16,7 @@ export class UserConversationEntity
 
   block: boolean;
 
-  @Expose({ groups: ['message.timestamps'] })
   createdAt: Date;
 
-  @Expose({ groups: ['message.timestamps'] })
   updatedAt: Date;
 }

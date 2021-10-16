@@ -13,9 +13,7 @@ export class MessageEntity extends ModelEntity implements IMessage {
 
   message: string | null;
 
-  @Expose({ groups: ['message.timestamps'] })
   createdAt: Date;
 
-  @Expose({ groups: ['message.timestamps'] })
   updatedAt: Date;
 }

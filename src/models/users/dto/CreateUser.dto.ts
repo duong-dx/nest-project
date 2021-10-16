@@ -1,14 +1,4 @@
-import {
-  IsEnum,
-  IsOptional,
-  // NotEquals,
-  IsDate,
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  IsEmail,
-} from 'class-validator';
-import { Gender } from '../interfaces/user.interface';
+import { IsNotEmpty, IsString, MaxLength, IsEmail } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -18,18 +8,6 @@ export class CreateUserDto {
 
   @IsEmail()
   email: string;
-
-  @IsString()
-  @MaxLength(255)
-  address: string | null;
-
-  @IsEnum(Gender)
-  // @NotEquals(Gender[Gender.other]) ignore "other"
-  gender: Gender | null;
-
-  @IsOptional()
-  @IsDate()
-  birthday: Date | null;
 
   @IsNotEmpty()
   password: string;

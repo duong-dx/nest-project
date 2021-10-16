@@ -17,9 +17,7 @@ export class ConversationEntity extends ModelEntity implements IConversation {
 
   background: Backgrounds | null;
 
-  @Expose({ groups: ['message.timestamps'] })
   createdAt: Date;
 
-  @Expose({ groups: ['message.timestamps'] })
   updatedAt: Date;
 }

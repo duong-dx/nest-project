@@ -1,4 +1,4 @@
-import { Gender, IUser } from '../interfaces/user.interface';
+import { IUser } from '../interfaces/user.interface';
 import { Expose } from 'class-transformer';
 import { ModelEntity } from '../../model.serializer';
 
@@ -17,13 +17,6 @@ export class UserEntity extends ModelEntity implements IUser {
   email: string;
 
   name: null | string;
-
-  gender: Gender | null;
-
-  address: string | null;
-
-  @Expose({ groups: ['user.birthday'] })
-  birthday: Date;
 
   @Expose({ groups: ['user.password'] })
   password: string;
