@@ -4,9 +4,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn, OneToOne, JoinColumn
-} from "typeorm";
-import { User } from "../../users/entities/user.entity";
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity({ name: 'profiles' })
 export class Profile implements IProfile {

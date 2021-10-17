@@ -3,7 +3,6 @@ import {
   Emojis,
   IConversation,
 } from '../interfaces/conversation.interface';
-import { Expose } from 'class-transformer';
 import { ModelEntity } from '../../model.serializer';
 
 export class ConversationEntity extends ModelEntity implements IConversation {

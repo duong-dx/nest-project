@@ -1,5 +1,4 @@
 import { IMessage } from '../interfaces/message.interface';
-import { Expose } from 'class-transformer';
 import { ModelEntity } from '../../model.serializer';
 
 export class MessageEntity extends ModelEntity implements IMessage {

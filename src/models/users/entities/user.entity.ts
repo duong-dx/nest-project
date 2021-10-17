@@ -8,11 +8,12 @@ import {
   Column,
   OneToMany,
   ManyToMany,
-  JoinTable, OneToOne
-} from "typeorm";
+  JoinTable,
+  OneToOne,
+} from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
 import { Conversation } from '../../conversations/entities/conversation.entity';
-import { Profile } from "../../profiles/entities/profile.entity";
+import { Profile } from '../../profiles/entities/profile.entity';
 
 @Entity({ name: 'users' })
 export class User implements IUser {

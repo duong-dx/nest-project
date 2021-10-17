@@ -7,16 +7,12 @@ import {
   Param,
   Controller,
   UseInterceptors,
-  SerializeOptions,
   ClassSerializerInterceptor,
   HttpException,
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import {
-  UserEntity,
-  extendedUserGroupsForSerializing,
-} from './serializers/user.serializer';
+import { UserEntity } from './serializers/user.serializer';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/CreateUser.dto';
@@ -24,20 +20,15 @@ import { AuthenticationGuard } from '../../auth/guards/auth.guard';
 
 @UseGuards(AuthenticationGuard)
 @Controller('users')
-@SerializeOptions({
-  groups: extendedUserGroupsForSerializing,
-})
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('/')
-  @UseInterceptors(ClassSerializerInterceptor)
   async index() {
     return this.usersService.findAll();
   }
 
   @Get('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
   async getById(@Param() params): Promise<UserEntity> {
     const user = await this.usersService.findById(params.id, ['messages']);
     this.throwUserNotFound(user);
@@ -56,7 +47,6 @@ export class UsersController {
   }
 
   @Get('conversation/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
   async userConversation(@Param() params): Promise<UserEntity> {
     const user = await this.usersService.findById(params.id, [
       'profile',
@@ -68,13 +58,11 @@ export class UsersController {
   }
 
   @Post('/')
-  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() inputs: CreateUserDto): Promise<UserEntity> {
     return await this.usersService.create(inputs);
   }
 
   @Put('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
   async update(@Param() params, @Body() inputs: User): Promise<UserEntity> {
     const user = await this.usersService.findById(parseInt(params.id, 0));
     this.throwUserNotFound(user);
