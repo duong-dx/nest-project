@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConversationsModule } from './models/conversations/conversations.module';
 import { UserConversationModule } from './models/user_conversation/user-conversation.module';
 import { ProfilesModule } from './models/profiles/profiles.module';
+import { GatewayModules } from './gatewaies/gateway.modules';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ProfilesModule } from './models/profiles/profiles.module';
     ConversationsModule,
     UserConversationModule,
     ProfilesModule,
+    GatewayModules,
   ],
   controllers: [AppController],
   providers: [AppService],
