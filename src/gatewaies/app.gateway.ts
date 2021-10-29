@@ -9,7 +9,7 @@ import {
 import { Socket, Server } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
 import { WsGuard } from './guards/validation';
-import { MessagesInterface } from './interfaces/messages.interface'
+import { MessagesInterface } from './interfaces/messages.interface';
 
 @UseGuards(WsGuard)
 @WebSocketGateway(3006, { cors: true })
@@ -24,7 +24,10 @@ export class AppGateway
   }
 
   handleConnection(client: any, ...args: any[]): any {
-    this.logger.log(args, client.id, 'Connected');
+    this.logger.log(args, client.id, 'Connected..............................');
+    client.on('room', (room) => {
+      client.join(room);
+    });
   }
 
   handleDisconnect(client: Socket) {
@@ -34,7 +37,9 @@ export class AppGateway
   @UseGuards(WsGuard)
   @SubscribeMessage('messages')
   async messages(client: Socket, payload: MessagesInterface) {
-    console.log(payload.user.id);
-    client.emit('message-received', { message: payload.message });
+    console.log(payload);
+    this.server
+      .to('room1')
+      .emit('message-received', { message: payload.message });
   }
 }
