@@ -1,7 +1,3 @@
 import { AppGateway } from './app.gateway';
 
-export class MessageGateway extends AppGateway {
-  constructor() {
-    super();
-  }
-}
+export class MessageGateway extends AppGateway {}

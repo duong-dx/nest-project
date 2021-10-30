@@ -29,7 +29,6 @@ export class messageTable1632326169350 implements MigrationInterface {
             default: false,
             isNullable: true,
           },
-
           {
             name: 'message',
             type: 'varchar(5000)',
