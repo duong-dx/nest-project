@@ -51,9 +51,10 @@ export class AppGateway
   @SubscribeMessage('messages')
   async messages(client: Socket, payload: MessagesInterface) {
     console.log(payload);
-    this.server
-      .to(payload.room)
-      .emit('message-received', { message: payload.message });
+    this.server.to(payload.room).emit('message-received', {
+      message: payload.message,
+      room: payload.room,
+    });
 
     //https://stackoverflow.com/questions/35680565/sending-message-to-specific-client-in-socket-io
     // // sending to sender-client only
