@@ -5,6 +5,7 @@
 ## Description
 
 Development by Dinh Xuan Duong
+<br/>
 email: duong120798@gmail.com && xuanduong.kma@gmail.com
 
 ## Installation
