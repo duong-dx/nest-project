@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InformationRepository } from './information.repository';
 import { InformationEntity } from './serializers/information.serializer';
-import { Information } from './entities/information.entity';
+import { SaveInformationDto } from './dto/save.dto';
 
 @Injectable()
 export class InformationService {
@@ -23,7 +23,7 @@ export class InformationService {
     //3rZeXzcRkHAfAnO-AAAB
   }
 
-  async create(inputs: Information): Promise<InformationEntity> {
+  async create(inputs: SaveInformationDto): Promise<InformationEntity> {
     return await this.informationRepository.createEntity(inputs);
   }
 
@@ -39,14 +39,22 @@ export class InformationService {
     );
   }
 
+  async findSocketId(user_id: number | string) {
+    return await this.informationRepository.findSocketId(user_id);
+  }
+
   async update(
     Information: InformationEntity,
-    inputs: Information,
+    inputs: SaveInformationDto,
   ): Promise<InformationEntity> {
     return await this.informationRepository.updateEntity(Information, inputs);
   }
 
   async deleteById(id: number): Promise<boolean> {
     return await this.informationRepository.deleteEntityById(id);
+  }
+
+  async deleteByValue(user_id: number, value: string): Promise<boolean> {
+    return await this.informationRepository.deleteByValue(user_id, value);
   }
 }

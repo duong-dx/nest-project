@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { InformationEntity } from './serializers/information.serializer';
 import { InformationService } from './information.service';
-import { Information } from './entities/information.entity';
+import { SaveInformationDto } from './dto/save.dto';
 
 @Controller('information')
 export class InformationController {
@@ -30,16 +30,18 @@ export class InformationController {
   }
 
   @Post('/')
-  async create(@Body() inputs: Information): Promise<InformationEntity> {
+  async create(@Body() inputs: SaveInformationDto): Promise<InformationEntity> {
     return await this.informationService.create(inputs);
   }
 
   @Put('/:id')
   async update(
     @Param() params,
-    @Body() inputs: Information,
+    @Body() inputs: SaveInformationDto,
   ): Promise<InformationEntity> {
-    const Information = await this.informationService.findById(parseInt(params.id, 0));
+    const Information = await this.informationService.findById(
+      parseInt(params.id, 0),
+    );
     this.throwInformationNotFound(Information);
     return await this.informationService.update(Information, inputs);
   }

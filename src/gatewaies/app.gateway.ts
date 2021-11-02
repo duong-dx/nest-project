@@ -6,12 +6,16 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Socket, Server } from 'socket.io';
-import { Logger, UseGuards, Request } from '@nestjs/common';
+import { Server, Socket } from 'socket.io';
+import { HttpException, HttpStatus, Logger, UseGuards } from '@nestjs/common';
 import { WsGuard } from './guards/validation';
 import { MessagesInterface } from './interfaces/messages.interface';
-import { UsersService } from "../models/users/users.service";
-import { JwtService } from "@nestjs/jwt";
+import { UsersService } from '../models/users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import { InformationService } from '../models/information/information.service';
+import { TypeInformation } from '../models/information/interfaces/information.interface';
+import { SaveInformationDto } from '../models/information/dto/save.dto';
+import { UserEntity } from '../models/users/serializers/user.serializer';
 
 @UseGuards(WsGuard)
 @WebSocketGateway(3006, { cors: true })
@@ -22,6 +26,7 @@ export class AppGateway
   private logger: Logger = new Logger('MessageGateway');
   constructor(
     private userService: UsersService,
+    private informationService: InformationService,
     private jwtService: JwtService,
   ) {}
 
@@ -31,19 +36,30 @@ export class AppGateway
 
   async handleConnection(client: Socket) {
     this.logger.log(client.id, 'Connected..............................');
-    const user = await this.getDataUserFromToken(client);
+    const user: UserEntity = await this.getDataUserFromToken(client);
 
     console.log(user, 3232323232);
+    const information: SaveInformationDto = {
+      user_id: user.id,
+      type: TypeInformation.socket_id,
+      status: false,
+      value: client.id,
+    };
+
+    await this.informationService.create(information);
     // need handle insert socketId to information table
-    client.on('room', (room) => {
-      client.join(room);
-    });
+    // client.on('room', (room) => {
+    //   client.join(room);
+    // });
   }
 
   async handleDisconnect(client: Socket) {
     const user = await this.getDataUserFromToken(client);
 
     console.log(user, 999999);
+    const result = this.informationService.deleteByValue(user.id, client.id);
+
+    console.log(result, 'result handle disconnect');
     // need handle remove socketId to information table
     this.logger.log(client.id, 'Disconnect');
   }
@@ -51,9 +67,18 @@ export class AppGateway
   @SubscribeMessage('messages')
   async messages(client: Socket, payload: MessagesInterface) {
     console.log(payload);
-    this.server.to(payload.room).emit('message-received', {
-      message: payload.message,
-      room: payload.room,
+    const dataSocketId = await this.informationService.findSocketId(
+      payload.user.id,
+    );
+
+    console.log(dataSocketId);
+    const emit = this.server;
+    dataSocketId.map((value, index) => {
+      console.log(value.value, index);
+      emit.to(value.value).emit('message-received', {
+        message: payload.message,
+        room: payload.room,
+      });
     });
 
     //https://stackoverflow.com/questions/35680565/sending-message-to-specific-client-in-socket-io
@@ -107,15 +132,16 @@ export class AppGateway
     //     io.sockets.socket(socketId).emit('message', 'this is a test');
   }
 
-  async getDataUserFromToken(client: Socket) {
+  async getDataUserFromToken(client: Socket): Promise<UserEntity> {
     const authToken: any = client.handshake?.query?.token;
+    console.log(authToken, 11111);
     try {
       const decoded = this.jwtService.verify(authToken);
 
       return await this.userService.getUserByEmail(decoded.email); // response to function
     } catch (ex) {
       console.log('token invalid');
-      return false;
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 }

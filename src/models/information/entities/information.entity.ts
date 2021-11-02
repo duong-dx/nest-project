@@ -19,7 +19,7 @@ export class Information implements IInformation {
   id: string;
 
   @Column({ name: 'user_id', nullable: true })
-  user_id: number;
+  user_id: number | string;
 
   @Column({ name: 'status', default: false })
   status: boolean;

@@ -7,7 +7,7 @@ import { ModelEntity } from '../../model.serializer';
 export class InformationEntity extends ModelEntity implements IInformation {
   id: number | string;
 
-  user_id: null | number;
+  user_id: number | string | null;
 
   status: boolean;
 
@@ -15,7 +15,7 @@ export class InformationEntity extends ModelEntity implements IInformation {
 
   value: string | null;
 
-  createdAt: Date;
+  createdAt: Date | null;
 
-  updatedAt: Date;
+  updatedAt: Date | null;
 }

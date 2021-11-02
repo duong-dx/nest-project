@@ -2,7 +2,7 @@ import { IUser } from '../interfaces/user.interface';
 import { ModelEntity } from '../../model.serializer';
 
 export class UserEntity extends ModelEntity implements IUser {
-  id: number | string;
+  id: number;
 
   email: string;
 

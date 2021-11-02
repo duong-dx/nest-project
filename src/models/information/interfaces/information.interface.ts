@@ -1,6 +1,6 @@
 export interface IInformation {
   id: number | string;
-  user_id: number | null;
+  user_id: number | string | null;
   status: boolean;
   type: TypeInformation | null;
   value: string;
