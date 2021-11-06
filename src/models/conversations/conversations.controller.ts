@@ -15,17 +15,15 @@ import { ConversationEntity } from './serializers/conversation.serializer';
 import { ConversationsService } from './conversations.service';
 import { Conversation } from './entities/conversation.entity';
 import { AuthenticationGuard } from '../../auth/guards/auth.guard';
-import { LocalAuthGuard } from '../../auth/guards/local.guard';
 
 @UseGuards(AuthenticationGuard)
 @Controller('conversations')
 export class ConversationsController {
   constructor(private readonly conversationService: ConversationsService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Get('/')
-  async index(@Request() request) {
-    return this.conversationService.findAllBuyUserId(request.user.id);
+  async index() {
+    return this.conversationService.findAll();
   }
 
   @Get('/:id')

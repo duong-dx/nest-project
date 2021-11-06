@@ -4,6 +4,7 @@ import { ModelRepository } from '../model.repository';
 import { UserEntity } from './serializers/user.serializer';
 import { plainToClass, classToPlain } from 'class-transformer';
 import { NotFoundException } from '@nestjs/common';
+import { ConversationEntity } from '../conversations/serializers/conversation.serializer';
 
 @EntityRepository(User)
 export class UsersRepository extends ModelRepository<User, UserEntity> {
@@ -42,6 +43,28 @@ export class UsersRepository extends ModelRepository<User, UserEntity> {
       .where('messages.status = :status', { status })
       .andWhere({ id })
       .getOne();
+  }
+
+  async findAllConversation(
+    user_id: number | string,
+  ): Promise<UserEntity | null> {
+    console.log(user_id, 2222222222);
+    return await this.createQueryBuilder('users')
+      .leftJoinAndSelect('users.conversations', 'conversations')
+      .leftJoinAndSelect('conversations.users', 'usersInConversation')
+      .loadRelationCountAndMap(
+        'conversations.unread',
+        'conversations.messages',
+        'message',
+        (qb) => qb.where('message.status = 0'),
+      )
+      .getOne()
+      .then((entity) => {
+        if (!entity) {
+          return Promise.reject(new NotFoundException('Model not found'));
+        }
+        return Promise.resolve(entity ? this.transform(entity) : null);
+      });
   }
 
   transform(model: User): UserEntity {

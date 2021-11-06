@@ -21,18 +21,6 @@ export class ConversationsService {
     );
   }
 
-  async findAllBuyUserId(
-    user_id: number | string,
-    relations: string[] = [],
-    throwsException = false,
-  ): Promise<ConversationEntity[]> {
-    return await this.conversationRepository.findAllBuyUserId(
-      user_id,
-      relations,
-      throwsException,
-    );
-  }
-
   async create(inputs: Conversation): Promise<ConversationEntity> {
     return await this.conversationRepository.createEntity(inputs);
   }

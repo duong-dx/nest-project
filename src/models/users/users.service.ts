@@ -4,6 +4,7 @@ import { UsersRepository } from './users.repository';
 import { UserEntity } from './serializers/user.serializer';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { ConversationEntity } from "../conversations/serializers/conversation.serializer";
 
 @Injectable()
 export class UsersService {
@@ -55,5 +56,11 @@ export class UsersService {
 
   async getUserByEmail(email: string): Promise<UserEntity> {
     return await this.usersRepository.getUserByEmail(email);
+  }
+
+  async findAllConversations(
+    user_id: number | string,
+  ): Promise<UserEntity | null> {
+    return await this.usersRepository.findAllConversation(user_id);
   }
 }

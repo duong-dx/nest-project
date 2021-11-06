@@ -11,6 +11,7 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserEntity } from './serializers/user.serializer';
 import { UsersService } from './users.service';
@@ -53,6 +54,13 @@ export class UsersController {
       'conversations',
       'conversations.messages',
     ]);
+    this.throwUserNotFound(user);
+    return user;
+  }
+
+  @Get('conversations/get')
+  async getAllConversation(@Request() request): Promise<UserEntity> {
+    const user = await this.usersService.findAllConversations(request.user.id);
     this.throwUserNotFound(user);
     return user;
   }
