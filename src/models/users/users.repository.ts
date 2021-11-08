@@ -4,7 +4,6 @@ import { ModelRepository } from '../model.repository';
 import { UserEntity } from './serializers/user.serializer';
 import { plainToClass, classToPlain } from 'class-transformer';
 import { NotFoundException } from '@nestjs/common';
-import { ConversationEntity } from '../conversations/serializers/conversation.serializer';
 
 @EntityRepository(User)
 export class UsersRepository extends ModelRepository<User, UserEntity> {

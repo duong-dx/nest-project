@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MessagesRepository } from './messages.repository';
 import { MessageEntity } from './serializers/message.serializer';
 import { Message } from './entities/message.entity';
+import { Pagination } from "../pagination";
 
 @Injectable()
 export class MessagesService {
@@ -18,6 +19,20 @@ export class MessagesService {
     return await this.messagesRepository.getAllEntity(
       relations,
       throwsException,
+    );
+  }
+
+  async findAllPaginate(
+    conversation_id: number | string,
+    take: number | null,
+    page: number | null,
+    relations: string[] = [],
+  ): Promise<Pagination<MessageEntity>> {
+    return this.messagesRepository.findAllPaginate(
+      conversation_id,
+      take,
+      page,
+      relations,
     );
   }
 

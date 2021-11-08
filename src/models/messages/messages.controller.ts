@@ -6,20 +6,29 @@ import {
   Delete,
   Param,
   Controller,
+  Query,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { MessageEntity } from './serializers/message.serializer';
 import { MessagesService } from './messages.service';
 import { Message } from './entities/message.entity';
+import { AuthenticationGuard } from '../../auth/guards/auth.guard';
+import { MessageListParam } from './interfaces/message.interface';
 
+@UseGuards(AuthenticationGuard)
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messageService: MessagesService) {}
 
   @Get('/')
-  async index() {
-    return this.messageService.findAll();
+  async index(@Query() query: MessageListParam) {
+    return this.messageService.findAllPaginate(
+      query.conversation_id,
+      query.take,
+      query.page,
+    );
   }
 
   @Get('/:id')

@@ -66,7 +66,7 @@ export class AppGateway
 
   @SubscribeMessage('messages')
   async messages(client: Socket, payload: MessagesInterface) {
-    console.log(payload);
+    console.log(payload, 9999999);
     const dataSocketId = await this.informationService.findSocketId(
       payload.user.id,
     );
@@ -77,7 +77,10 @@ export class AppGateway
       console.log(value.value, index);
       emit.to(value.value).emit('message-received', {
         message: payload.message,
-        room: payload.room,
+        conversation_id: payload.conversation_id,
+        user_id: payload.user_id,
+        createdAt: payload.createdAt,
+        updatedAt: payload.updatedAt,
       });
     });
 

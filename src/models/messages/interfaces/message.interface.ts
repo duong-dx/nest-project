@@ -5,3 +5,9 @@ export interface IMessage {
   status: boolean;
   message: string | null;
 }
+
+export interface MessageListParam {
+  conversation_id: number | string | null;
+  take: number | null;
+  page: number | null;
+}
