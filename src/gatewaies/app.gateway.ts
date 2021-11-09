@@ -16,6 +16,7 @@ import { InformationService } from '../models/information/information.service';
 import { TypeInformation } from '../models/information/interfaces/information.interface';
 import { SaveInformationDto } from '../models/information/dto/save.dto';
 import { UserEntity } from '../models/users/serializers/user.serializer';
+import { ConversationsService } from "../models/conversations/conversations.service";
 
 @UseGuards(WsGuard)
 @WebSocketGateway(3006, { cors: true })
@@ -26,6 +27,7 @@ export class AppGateway
   private logger: Logger = new Logger('MessageGateway');
   constructor(
     private userService: UsersService,
+    private conversationService: ConversationsService,
     private informationService: InformationService,
     private jwtService: JwtService,
   ) {}
@@ -38,7 +40,6 @@ export class AppGateway
     this.logger.log(client.id, 'Connected..............................');
     const user: UserEntity = await this.getDataUserFromToken(client);
 
-    console.log(user, 3232323232);
     const information: SaveInformationDto = {
       user_id: user.id,
       type: TypeInformation.socket_id,
@@ -56,7 +57,6 @@ export class AppGateway
   async handleDisconnect(client: Socket) {
     const user = await this.getDataUserFromToken(client);
 
-    console.log(user, 999999);
     const result = this.informationService.deleteByValue(user.id, client.id);
 
     console.log(result, 'result handle disconnect');
@@ -66,10 +66,19 @@ export class AppGateway
 
   @SubscribeMessage('messages')
   async messages(client: Socket, payload: MessagesInterface) {
-    console.log(payload, 9999999);
-    const dataSocketId = await this.informationService.findSocketId(
-      payload.user.id,
+    const conversation = await this.conversationService.findById(
+      payload.conversation_id,
+      ['users'],
     );
+
+    const userId = [];
+    conversation.users.map((user) => {
+      userId.push(user.id);
+
+      return user;
+    });
+
+    const dataSocketId = await this.informationService.findSocketId(userId);
 
     console.log(dataSocketId);
     const emit = this.server;
@@ -137,7 +146,6 @@ export class AppGateway
 
   async getDataUserFromToken(client: Socket): Promise<UserEntity> {
     const authToken: any = client.handshake?.query?.token;
-    console.log(authToken, 11111);
     try {
       const decoded = this.jwtService.verify(authToken);
 

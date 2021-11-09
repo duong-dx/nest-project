@@ -1,4 +1,4 @@
-import { EntityRepository } from 'typeorm';
+import { EntityRepository, In } from 'typeorm';
 import { Information } from './entities/information.entity';
 import { ModelRepository } from '../model.repository';
 import { InformationEntity } from './serializers/information.serializer';
@@ -10,9 +10,9 @@ export class InformationRepository extends ModelRepository<
   Information,
   InformationEntity
 > {
-  async findSocketId(user_id: number | string) {
+  async findSocketId(user_id: number[]) {
     return await this.find({
-      where: { user_id, type: TypeInformation.socket_id },
+      where: { user_id: In(user_id), type: TypeInformation.socket_id },
       select: ['value'],
     });
   }

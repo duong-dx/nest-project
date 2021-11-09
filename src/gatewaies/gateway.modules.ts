@@ -8,12 +8,19 @@ import { JwtModule } from '@nestjs/jwt';
 import { EXPIRES_TIME, JWT_SECRET_KEY } from '../config/constants';
 import { InformationModule } from '../models/information/information.module';
 import { InformationRepository } from '../models/information/information.repository';
+import { ConversationsModule } from '../models/conversations/conversations.module';
+import { ConversationsRepository } from '../models/conversations/conversations.repository';
 
 @Module({
   imports: [
     UsersModule,
     InformationModule,
-    TypeOrmModule.forFeature([UsersRepository, InformationRepository]),
+    ConversationsModule,
+    TypeOrmModule.forFeature([
+      UsersRepository,
+      InformationRepository,
+      ConversationsRepository,
+    ]),
     JwtModule.register({
       secret: JWT_SECRET_KEY,
       signOptions: { expiresIn: EXPIRES_TIME },

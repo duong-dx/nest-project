@@ -9,7 +9,6 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { ConversationEntity } from './serializers/conversation.serializer';
 import { ConversationsService } from './conversations.service';
@@ -23,7 +22,9 @@ export class ConversationsController {
 
   @Get('/')
   async index() {
-    return this.conversationService.findAll();
+    return this.conversationService.findAll([
+      'users',
+    ]);
   }
 
   @Get('/:id')
@@ -57,6 +58,21 @@ export class ConversationsController {
     );
     this.throwConversationNotFound(Conversation);
     return await this.conversationService.deleteById(params.id);
+  }
+
+  @Get('socket/:id')
+  async getDataInformation(@Param() params): Promise<any> {
+    const conversation = await this.conversationService.findById(params.id, [
+      'users',
+    ]);
+
+    const userId = [];
+    conversation.users.map((user) => {
+      userId.push(user.id);
+      return user;
+    });
+
+    return userId;
   }
 
   throwConversationNotFound(Conversation: ConversationEntity) {

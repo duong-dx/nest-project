@@ -14,6 +14,7 @@ import {
 import { Message } from '../../messages/entities/message.entity';
 import { Conversation } from '../../conversations/entities/conversation.entity';
 import { Profile } from '../../profiles/entities/profile.entity';
+import { Information } from "../../information/entities/information.entity";
 
 @Entity({ name: 'users' })
 export class User implements IUser {
@@ -45,6 +46,11 @@ export class User implements IUser {
 
   @OneToMany(() => Message, (message) => message.user)
   messages?: Message[];
+
+  @OneToMany(() => Information, (information) => information.user, {
+    eager: true,
+  })
+  information?: Information[];
 
   @ManyToMany(() => Conversation, (conversations) => conversations.users)
   @JoinTable({

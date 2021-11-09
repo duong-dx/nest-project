@@ -39,7 +39,7 @@ export class InformationService {
     );
   }
 
-  async findSocketId(user_id: number | string) {
+  async findSocketId(user_id: number[]) {
     return await this.informationRepository.findSocketId(user_id);
   }
 
