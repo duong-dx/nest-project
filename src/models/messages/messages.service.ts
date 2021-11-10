@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MessagesRepository } from './messages.repository';
 import { MessageEntity } from './serializers/message.serializer';
 import { Message } from './entities/message.entity';
-import { Pagination } from "../pagination";
+import { Pagination } from '../pagination';
+import { CreateMessage } from './interfaces/message.interface';
 
 @Injectable()
 export class MessagesService {
@@ -36,7 +37,7 @@ export class MessagesService {
     );
   }
 
-  async create(inputs: Message): Promise<MessageEntity> {
+  async create(inputs: CreateMessage): Promise<MessageEntity> {
     return await this.messagesRepository.createEntity(inputs);
   }
 

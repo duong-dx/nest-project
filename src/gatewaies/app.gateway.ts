@@ -16,7 +16,9 @@ import { InformationService } from '../models/information/information.service';
 import { TypeInformation } from '../models/information/interfaces/information.interface';
 import { SaveInformationDto } from '../models/information/dto/save.dto';
 import { UserEntity } from '../models/users/serializers/user.serializer';
-import { ConversationsService } from "../models/conversations/conversations.service";
+import { ConversationsService } from '../models/conversations/conversations.service';
+import { MessagesService } from '../models/messages/messages.service';
+import { CreateMessage } from '../models/messages/interfaces/message.interface';
 
 @UseGuards(WsGuard)
 @WebSocketGateway(3006, { cors: true })
@@ -29,6 +31,7 @@ export class AppGateway
     private userService: UsersService,
     private conversationService: ConversationsService,
     private informationService: InformationService,
+    private messageService: MessagesService,
     private jwtService: JwtService,
   ) {}
 
@@ -80,16 +83,25 @@ export class AppGateway
 
     const dataSocketId = await this.informationService.findSocketId(userId);
 
-    console.log(dataSocketId);
+    const message = await this.messageService.create({
+      user_id: payload.user_id,
+      status: false,
+      message: payload.message,
+      conversation_id: payload.conversation_id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
     const emit = this.server;
-    dataSocketId.map((value, index) => {
-      console.log(value.value, index);
+    dataSocketId.map((value) => {
       emit.to(value.value).emit('message-received', {
-        message: payload.message,
-        conversation_id: payload.conversation_id,
-        user_id: payload.user_id,
-        createdAt: payload.createdAt,
-        updatedAt: payload.updatedAt,
+        id: message.id,
+        message: message.message,
+        conversation_id: message.conversation_id,
+        user_id: message.user_id,
+        status: message.status,
+        createdAt: message.createdAt,
+        updatedAt: message.updatedAt,
       });
     });
 

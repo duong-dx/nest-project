@@ -10,16 +10,20 @@ import { InformationModule } from '../models/information/information.module';
 import { InformationRepository } from '../models/information/information.repository';
 import { ConversationsModule } from '../models/conversations/conversations.module';
 import { ConversationsRepository } from '../models/conversations/conversations.repository';
+import { MessagesRepository } from '../models/messages/messages.repository';
+import { MessagesModule } from '../models/messages/messages.module';
 
 @Module({
   imports: [
     UsersModule,
     InformationModule,
     ConversationsModule,
+    MessagesModule,
     TypeOrmModule.forFeature([
       UsersRepository,
       InformationRepository,
       ConversationsRepository,
+      MessagesRepository,
     ]),
     JwtModule.register({
       secret: JWT_SECRET_KEY,
