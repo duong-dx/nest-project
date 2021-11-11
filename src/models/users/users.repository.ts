@@ -47,7 +47,6 @@ export class UsersRepository extends ModelRepository<User, UserEntity> {
   async findAllConversation(
     user_id: number | string,
   ): Promise<UserEntity | null> {
-    console.log(user_id, 2222222222);
     return await this.createQueryBuilder('users')
       .leftJoinAndSelect('users.conversations', 'conversations')
       .leftJoinAndSelect('conversations.users', 'usersInConversation')
@@ -57,6 +56,7 @@ export class UsersRepository extends ModelRepository<User, UserEntity> {
         'message',
         (qb) => qb.where('message.status = 0'),
       )
+      .where('usersInConversation.id = :id', { id: user_id })
       .getOne()
       .then((entity) => {
         if (!entity) {

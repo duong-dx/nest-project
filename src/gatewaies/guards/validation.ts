@@ -22,7 +22,6 @@ export class WsGuard implements CanActivate {
 
       return user;
     } catch (ex) {
-      console.log('token invalid');
       return false;
     }
   }

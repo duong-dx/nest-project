@@ -59,10 +59,11 @@ export class AppGateway
 
   async handleDisconnect(client: Socket) {
     const user = await this.getDataUserFromToken(client);
+    const result = await this.informationService.deleteByValue(
+      user.id,
+      client.id,
+    );
 
-    const result = this.informationService.deleteByValue(user.id, client.id);
-
-    console.log(result, 'result handle disconnect');
     // need handle remove socketId to information table
     this.logger.log(client.id, 'Disconnect');
   }
@@ -163,7 +164,6 @@ export class AppGateway
 
       return await this.userService.getUserByEmail(decoded.email); // response to function
     } catch (ex) {
-      console.log('token invalid');
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
