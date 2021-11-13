@@ -46,17 +46,36 @@ export class UsersRepository extends ModelRepository<User, UserEntity> {
 
   async findAllConversation(
     user_id: number | string,
-  ): Promise<UserEntity | null> {
+  ): Promise<UserEntity | User | null> {
     return await this.createQueryBuilder('users')
-      .leftJoinAndSelect('users.conversations', 'conversations')
+      .innerJoinAndSelect('users.conversations', 'conversations')
       .leftJoinAndSelect('conversations.users', 'usersInConversation')
-      .loadRelationCountAndMap(
-        'conversations.unread',
+      // .leftJoinAndSelect(
+      //   'conversations.messages',
+      //   'messages',
+      //   'messages.conversation_id = conversations.id',
+      // )
+      .innerJoinAndMapOne(
         'conversations.messages',
-        'message',
-        (qb) => qb.where('message.status = 0'),
+        'conversations.messages',
+        'messages',
+        'messages.conversation_id = conversations.id',
       )
-      .where('usersInConversation.id = :id', { id: user_id })
+      .select([
+        'users',
+        'conversations',
+        'usersInConversation',
+        'userConversation.last_message_id',
+        'messages',
+      ])
+      .innerJoinAndMapOne(
+        'usersInConversation.last_message_id',
+        'usersInConversation.userConversation',
+        'userConversation',
+        'userConversation.conversation_id = conversations.id',
+      )
+      .where('users.id = :id', { id: user_id })
+      .orderBy('messages.id', 'DESC')
       .getOne()
       .then((entity) => {
         if (!entity) {

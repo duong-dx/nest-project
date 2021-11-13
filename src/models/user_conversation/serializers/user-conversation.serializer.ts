@@ -11,6 +11,8 @@ export class UserConversationEntity
 
   conversation_id: null | number;
 
+  last_message_id: null | number;
+
   mute: boolean;
 
   block: boolean;

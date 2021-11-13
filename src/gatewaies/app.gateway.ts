@@ -18,7 +18,7 @@ import { SaveInformationDto } from '../models/information/dto/save.dto';
 import { UserEntity } from '../models/users/serializers/user.serializer';
 import { ConversationsService } from '../models/conversations/conversations.service';
 import { MessagesService } from '../models/messages/messages.service';
-import { CreateMessage } from '../models/messages/interfaces/message.interface';
+import { UserConversationService } from '../models/user_conversation/user-conversation.service';
 
 @UseGuards(WsGuard)
 @WebSocketGateway(3006, { cors: true })
@@ -32,6 +32,7 @@ export class AppGateway
     private conversationService: ConversationsService,
     private informationService: InformationService,
     private messageService: MessagesService,
+    private userConversationService: UserConversationService,
     private jwtService: JwtService,
   ) {}
 
@@ -59,10 +60,7 @@ export class AppGateway
 
   async handleDisconnect(client: Socket) {
     const user = await this.getDataUserFromToken(client);
-    const result = await this.informationService.deleteByValue(
-      user.id,
-      client.id,
-    );
+    await this.informationService.deleteByValue(user.id, client.id);
 
     // need handle remove socketId to information table
     this.logger.log(client.id, 'Disconnect');
@@ -92,6 +90,20 @@ export class AppGateway
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    const dataUserConversation =
+      await this.userConversationService.findDataUserConversation(
+        message.user_id,
+        message.conversation_id,
+      );
+
+    const messageId =
+      typeof message.id === 'string' ? parseInt(message.id) : message.id;
+
+    await this.userConversationService.updateLastMessageId(
+      dataUserConversation,
+      messageId,
+    );
 
     const emit = this.server;
     dataSocketId.map((value) => {

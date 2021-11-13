@@ -12,6 +12,8 @@ import { ConversationsModule } from '../models/conversations/conversations.modul
 import { ConversationsRepository } from '../models/conversations/conversations.repository';
 import { MessagesRepository } from '../models/messages/messages.repository';
 import { MessagesModule } from '../models/messages/messages.module';
+import { UserConversationModule } from '../models/user_conversation/user-conversation.module';
+import { UserConversationRepository } from '../models/user_conversation/user-conversation.repository';
 
 @Module({
   imports: [
@@ -19,11 +21,13 @@ import { MessagesModule } from '../models/messages/messages.module';
     InformationModule,
     ConversationsModule,
     MessagesModule,
+    UserConversationModule,
     TypeOrmModule.forFeature([
       UsersRepository,
       InformationRepository,
       ConversationsRepository,
       MessagesRepository,
+      UserConversationRepository,
     ]),
     JwtModule.register({
       secret: JWT_SECRET_KEY,

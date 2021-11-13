@@ -12,6 +12,7 @@ import {
 import { UserConversationEntity } from './serializers/user-conversation.serializer';
 import { UserConversationService } from './user-conversation.service';
 import { UserConversation } from './entities/user-conversation.entity';
+import { UpdateLastMessage } from './interfaces/user-conversation.interface';
 
 @Controller('user-conversation')
 export class UserConversationController {
@@ -50,6 +51,27 @@ export class UserConversationController {
     );
     this.throwUserConversationNotFound(UserConversation);
     return await this.userConversationService.update(UserConversation, inputs);
+  }
+
+  @Put('update/last-message')
+  async updateLastMessageId(
+    @Body() inputs: UpdateLastMessage,
+  ): Promise<UserConversationEntity> {
+    const userConversation =
+      await this.userConversationService.findDataUserConversation(
+        inputs.user_id,
+        inputs.conversation_id,
+      );
+
+    this.throwUserConversationNotFound(userConversation);
+
+    const result = await this.userConversationService.updateLastMessageId(
+      userConversation,
+      inputs.message_id,
+    );
+    console.log(result);
+    
+    return result;
   }
 
   @Delete('/:id')

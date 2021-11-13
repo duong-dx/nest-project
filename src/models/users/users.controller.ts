@@ -59,7 +59,7 @@ export class UsersController {
   }
 
   @Get('conversations/get')
-  async getAllConversation(@Request() request): Promise<UserEntity> {
+  async getAllConversation(@Request() request): Promise<User | UserEntity> {
     const user = await this.usersService.findAllConversations(request.user.id);
     this.throwUserNotFound(user);
     return user;
@@ -89,7 +89,7 @@ export class UsersController {
     return this.usersService.geUsersByEmail(params.email);
   }
 
-  throwUserNotFound(user: UserEntity) {
+  throwUserNotFound(user: User | UserEntity) {
     if (!user) {
       throw new HttpException("User don't exists", HttpStatus.NOT_FOUND);
     }
