@@ -5,6 +5,7 @@ import { useContainer } from 'typeorm';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
   useContainer(app.select(AppModule), { fallbackOnErrors: true });

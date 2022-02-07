@@ -20,7 +20,7 @@ import { CreateUserDto } from './dto/CreateUser.dto';
 import { AuthenticationGuard } from '../../auth/guards/auth.guard';
 
 @UseGuards(AuthenticationGuard)
-@Controller('users')
+@Controller('/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
