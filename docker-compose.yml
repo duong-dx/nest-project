@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+# nest app
+  app:
+    container_name: nest_app
+    build:
+      context: docker/nest
+      dockerfile: ./Dockerfile
+    image: node:14-alpine
+    command: yarn start:dev
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT}:3000"
+      - "${APP_PORT_SECOND}:9229"
+    environment:
+      JWT_SECRET_KEY: "${JWT_SECRET_KEY}"
+      EXPIRES_TIME: "${EXPIRES_TIME}"
+
+      DB_CONNECTION: "${DB_CONNECTION}"
+      DB_HOST: "${DB_HOST}"
+      DB_PORT: "${DB_PORT}"
+      DB_DATABASE: "${DB_DATABASE}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+    depends_on:
+        - db
+    volumes:
+      - .:/usr/src/app
+      - nest-volume:/usr/src/app/node_modules
+    networks:
+      nest-network:
+
+# db
+  db:
+    container_name: nest_db
+    build:
+      context: docker/postgres
+      dockerfile: ./Dockerfile
+    image: postgres:13.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "${DB_DATABASE}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - ./docker/postgres/log/:/var/log/postgres
+      - nest-volume:/var/lib/postgresql/data
+    networks:
+      nest-network:
+
+# pgadmin
+  pgadmin:
+    container_name: nest_pgadmin
+    build:
+      context: docker/pgadmin
+      dockerfile: ./Dockerfile
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+      - "${PGADMIN_PORT}:5050"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_PORT}
+    networks:
+      nest-network:
+
+# volume
+volumes:
+  nest-volume: {}
+
+# networks
+networks:
+  nest-network:
+    driver: bridge
